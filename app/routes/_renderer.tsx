@@ -10,6 +10,7 @@ export default jsxRenderer(({ children, title }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{title}</title>
         <Script src="/app/client.ts" async />
+        <link href="/app/global.css" rel="stylesheet" />
         <Style />
       </head>
       <body>{children}</body>
