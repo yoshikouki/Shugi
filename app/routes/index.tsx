@@ -13,6 +13,6 @@ export default createRoute((c) => {
       <h1 className="text-9xl">Hello, {name}!</h1>
       <Counter />
     </div>,
-    { title: name }
+    { title: name },
   );
 });
