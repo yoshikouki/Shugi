@@ -3,5 +3,13 @@
   "private": true,
   "workspaces": [
     "apps/*"
-  ]
+  ],
+  "scripts": {
+    "dev": "bun --bun x concurrently --prefix-colors 'auto' --names 'WEB,API' 'bun dev:web' 'bun dev:api'",
+    "dev:web": "bun run --cwd=apps/web dev",
+    "dev:api": "bun run --cwd=apps/api dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
