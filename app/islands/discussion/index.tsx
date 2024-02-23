@@ -1,4 +1,4 @@
-import { useState } from "hono/jsx";
+import { useEffect, useState } from "hono/jsx";
 
 export default function Discussion() {
   const [openApiKey, setOpenApiKey] = useState("");
@@ -12,6 +12,19 @@ export default function Discussion() {
       setIsDiscussing(true);
     }
   };
+
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:5173/ws");
+    console.log(socket);
+    socket.addEventListener("open", () => {
+      console.log("WebSocket connected");
+    });
+    socket.send(
+      JSON.stringify({
+        cmd: "join",
+      })
+    );
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 max-w-sm">
