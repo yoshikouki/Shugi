@@ -11,9 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Key, Pause, Play } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useWebSocket } from "../websocket/use-websocket";
 
 const formSchema = z.object({
   openApiKey: z.string().refine((value) => /^sk-\w+$/.test(value), {
@@ -24,6 +25,7 @@ const formSchema = z.object({
 
 export default function Discussion() {
   const [isDiscussing, setIsDiscussing] = useState(false);
+  const ws = useWebSocket();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,17 +43,6 @@ export default function Discussion() {
     }
     console.log(values);
   };
-
-  useEffect(() => {
-    const socket = new WebSocket("ws://localhost:4000/ws");
-    socket.addEventListener("open", (event) => {
-      console.log("WebSocket connected", event);
-    });
-    socket.addEventListener("message", (event) => {
-      console.log("WebSocket message", event);
-    });
-    return () => socket.close();
-  }, []);
 
   return (
     <div className="">
