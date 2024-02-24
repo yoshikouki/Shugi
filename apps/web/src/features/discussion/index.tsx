@@ -67,7 +67,12 @@ export default function Discussion() {
                   OpenAI API Key
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="sk-***" type="password" {...field} />
+                  <Input
+                    placeholder="sk-***"
+                    type="password"
+                    autoComplete="off"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
