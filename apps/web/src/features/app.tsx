@@ -5,15 +5,18 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { useState } from "react";
+import Discussion from "./discussion";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <ResizablePanelGroup direction="horizontal" className="min-h-screen">
-      <ResizablePanel>One</ResizablePanel>
+      <ResizablePanel className="p-4 min-w-96">
+        <Discussion />
+      </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel>
+      <ResizablePanel className="p-4">
         <Button
           variant="default"
           onClick={() => setCount((count) => count + 1)}
