@@ -43,14 +43,14 @@ export default function Discussion() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3000/").then(
-      (res) => {
-        console.log(res);
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
+    const socket = new WebSocket("ws://localhost:4000/ws");
+    socket.addEventListener("open", (event) => {
+      console.log("WebSocket connected", event);
+    });
+    socket.addEventListener("message", (event) => {
+      console.log("WebSocket message", event);
+    });
+    return () => socket.close();
   }, []);
 
   return (
