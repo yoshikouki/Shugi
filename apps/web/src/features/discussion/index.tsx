@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Key, Pause, Play } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -41,6 +41,17 @@ export default function Discussion() {
     }
     console.log(values);
   };
+
+  useEffect(() => {
+    fetch("http://localhost:3000/").then(
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }, []);
 
   return (
     <div className="">
