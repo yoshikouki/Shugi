@@ -22,11 +22,7 @@ app.get("/", (c) => {
 });
 
 app.get("/ws", (c) => {
-  if (
-    !c.env.server.upgrade(c.req.raw, {
-      data: "im some data for association",
-    })
-  ) {
+  if (!c.env.server.upgrade(c.req.raw)) {
     console.error("failed to upgrade!");
   }
   return new Response(); // have to return empty response so hono doesn't get mad
@@ -41,10 +37,11 @@ Bun.serve({
   },
   websocket: {
     message(ws, msg) {
-      console.log("got message", ws.data, msg);
+      console.log("websocket message", msg);
+      ws.send(JSON.stringify({ message: "Hello from the server!" }));
     },
     open(ws) {
-      console.log("websocket opened", ws.data);
+      console.log("websocket opened", ws);
     },
   },
 });

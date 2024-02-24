@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -7,37 +6,31 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pause, Play } from "lucide-react";
-import { useState } from "react";
+import { Key } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useWebSocket } from "../websocket/use-websocket";
 
 const formSchema = z.object({
-  discussionTheme: z.string().min(1),
+  openApiKey: z.string().refine((value) => /^sk-\w+$/.test(value), {
+    message: "Invalid API key format. Please use the sk-**** format.",
+  }),
 });
 
-export default function Discussion() {
-  const [isDiscussing, setIsDiscussing] = useState(false);
+export default function Config() {
   const ws = useWebSocket();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      discussionTheme: "",
+      openApiKey: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (isDiscussing) {
-      setIsDiscussing(false);
-    } else {
-      setIsDiscussing(true);
-      ws?.send(JSON.stringify(values));
-    }
-    console.log(values);
+    ws?.send(JSON.stringify(values));
   };
 
   return (
@@ -46,20 +39,25 @@ export default function Discussion() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="discussionTheme"
+            name="openApiKey"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>What to discuss?</FormLabel>
+                <FormLabel className="flex items-center gap-2">
+                  <Key />
+                  OpenAI API Key
+                </FormLabel>
                 <FormControl>
-                  <Textarea placeholder="What to discuss?" {...field} />
+                  <Input
+                    placeholder="sk-***"
+                    type="password"
+                    autoComplete="off"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
-            {isDiscussing ? <Pause /> : <Play />}
-          </Button>
         </form>
       </Form>
     </div>
